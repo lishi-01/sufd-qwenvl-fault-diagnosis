@@ -318,11 +318,11 @@ cd /root/autodl-tmp/sufd-qwenvl-fault-diagnosis
 python demo/app_gradio.py --server-name 0.0.0.0 --server-port 6008
 ```
 
-本次 AutoDL 实验使用的端口映射为：
+AutoDL 端口映射示例：
 
 ```text
 容器端口：http://127.0.0.1:6008
-公网地址：https://uu775756-n0jj-7542c192.westd.seetacloud.com:8443
+公网地址：https://<your-autodl-service-url>
 ```
 
 Demo 默认加载：

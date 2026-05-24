@@ -10,7 +10,7 @@ SUFD-QwenVL 故障诊断 Gradio Demo。
 推荐在 AutoDL / Linux 训练环境中运行：
     conda activate llamafactory311
     cd /root/autodl-tmp/sufd-qwenvl-fault-diagnosis
-    python demo/app_gradio.py --server-name 0.0.0.0 --server-port 7860
+    python demo/app_gradio.py --server-name 0.0.0.0 --server-port 6008
 """
 
 from __future__ import annotations

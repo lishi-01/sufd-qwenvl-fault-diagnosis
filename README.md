@@ -385,11 +385,11 @@ cd /root/autodl-tmp/sufd-qwenvl-fault-diagnosis
 python demo/app_gradio.py --server-name 0.0.0.0 --server-port 6008
 ```
 
-如果 AutoDL 只映射固定端口，需要将 Gradio 端口设置为平台映射的端口。例如本次实验中使用：
+如果 AutoDL 只映射固定端口，需要将 Gradio 端口设置为平台映射的端口。例如：
 
 ```text
 容器端口：http://127.0.0.1:6008
-公网地址：https://uu775756-n0jj-7542c192.westd.seetacloud.com:8443
+公网地址：https://<your-autodl-service-url>
 ```
 
 Demo 默认模型路径：
