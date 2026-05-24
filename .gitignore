@@ -48,3 +48,17 @@ tmp/
 temp/
 *.tmp
 *.bak
+
+# Documents and local project notes
+*.pdf
+*.docx
+
+# Generated metadata and detailed prediction outputs
+data/processed/metadata/*.csv
+outputs/server_results/final_reports_ckpt_2200/
+outputs/server_results/metrics_ckpt_2200/confusion_matrix.csv
+outputs/server_results/metrics_ckpt_2200/confusion_matrix.png
+outputs/server_results/metrics_ckpt_2200/confusion_matrix_enhanced.csv
+outputs/server_results/metrics_ckpt_2200/confusion_matrix_percent.csv
+outputs/server_results/metrics_ckpt_2200/eval_metrics.json
+outputs/server_results/metrics_ckpt_2200/prediction_details.csv
