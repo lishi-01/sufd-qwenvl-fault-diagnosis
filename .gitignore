@@ -1,0 +1,50 @@
+# Raw data
+bearingset mat/
+*.mat
+*.zip
+
+# Generated datasets and large processed files
+data/processed/images/
+data/processed/json/
+data/processed/metadata/all_metadata.csv
+
+# Model files, checkpoints, and training outputs
+models/
+saves/
+checkpoint-*/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Experiment logs and trackers
+*.log
+runs/
+wandb/
+tensorboard/
+tf-logs/
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak

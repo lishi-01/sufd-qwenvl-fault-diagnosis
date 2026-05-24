@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="850" viewBox="0 0 900 850">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<style>
+text { font-family: 'Microsoft YaHei', 'SimHei', 'Noto Sans CJK SC', Arial, sans-serif; }
+.small { fill: #42526e; }
+</style>
+<text x="450.0" y="48" text-anchor="middle" font-size="26" font-weight="700" fill="#172033">SUFD 故障诊断混淆矩阵（最佳 checkpoint-2200）</text>
+<text x="450.0" y="82" text-anchor="middle" font-size="18" font-weight="400" fill="#172033">Accuracy = 0.4854，单元格显示：数量 / 真实类别内占比</text>
+<text x="250.0" y="108" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">N</text>
+<text x="250.0" y="135" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">正常状态</text>
+<text x="370.0" y="108" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">BF</text>
+<text x="370.0" y="135" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">滚动体故障</text>
+<text x="490.0" y="108" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">IF</text>
+<text x="490.0" y="135" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">内圈故障</text>
+<text x="610.0" y="108" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">OF</text>
+<text x="610.0" y="135" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">外圈故障</text>
+<text x="730.0" y="108" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">CF</text>
+<text x="730.0" y="135" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">混合故障</text>
+<text x="132" y="203.0" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">N</text>
+<text x="132" y="230.0" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">正常状态</text>
+<text x="132" y="323.0" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">BF</text>
+<text x="132" y="350.0" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">滚动体故障</text>
+<text x="132" y="443.0" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">IF</text>
+<text x="132" y="470.0" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">内圈故障</text>
+<text x="132" y="563.0" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">OF</text>
+<text x="132" y="590.0" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">外圈故障</text>
+<text x="132" y="683.0" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">CF</text>
+<text x="132" y="710.0" text-anchor="middle" font-size="17" font-weight="400" fill="#172033">混合故障</text>
+<rect x="190" y="150" width="120" height="120" fill="rgb(110,158,207)" stroke="#2f5f8f" stroke-width="2.5"/>
+<text x="250.0" y="202.0" text-anchor="middle" font-size="25" font-weight="700" fill="#ffffff">139</text>
+<text x="250.0" y="236.0" text-anchor="middle" font-size="18" fill="#ffffff">67.5%</text>
+<rect x="310" y="150" width="120" height="120" fill="rgb(209,225,244)" stroke="#d5dde8" stroke-width="1"/>
+<text x="370.0" y="202.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">32</text>
+<text x="370.0" y="236.0" text-anchor="middle" font-size="18" fill="#172033">15.5%</text>
+<rect x="430" y="150" width="120" height="120" fill="rgb(230,240,251)" stroke="#d5dde8" stroke-width="1"/>
+<text x="490.0" y="202.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">9</text>
+<text x="490.0" y="236.0" text-anchor="middle" font-size="18" fill="#172033">4.4%</text>
+<rect x="550" y="150" width="120" height="120" fill="rgb(229,239,251)" stroke="#d5dde8" stroke-width="1"/>
+<text x="610.0" y="202.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">10</text>
+<text x="610.0" y="236.0" text-anchor="middle" font-size="18" fill="#172033">4.9%</text>
+<rect x="670" y="150" width="120" height="120" fill="rgb(224,235,249)" stroke="#d5dde8" stroke-width="1"/>
+<text x="730.0" y="202.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">16</text>
+<text x="730.0" y="236.0" text-anchor="middle" font-size="18" fill="#172033">7.8%</text>
+<rect x="190" y="270" width="120" height="120" fill="rgb(179,205,233)" stroke="#d5dde8" stroke-width="1"/>
+<text x="250.0" y="322.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">64</text>
+<text x="250.0" y="356.0" text-anchor="middle" font-size="18" fill="#172033">31.1%</text>
+<rect x="310" y="270" width="120" height="120" fill="rgb(172,200,230)" stroke="#2f5f8f" stroke-width="2.5"/>
+<text x="370.0" y="322.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">72</text>
+<text x="370.0" y="356.0" text-anchor="middle" font-size="18" fill="#172033">35.0%</text>
+<rect x="430" y="270" width="120" height="120" fill="rgb(222,234,248)" stroke="#d5dde8" stroke-width="1"/>
+<text x="490.0" y="322.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">18</text>
+<text x="490.0" y="356.0" text-anchor="middle" font-size="18" fill="#172033">8.7%</text>
+<rect x="550" y="270" width="120" height="120" fill="rgb(220,233,248)" stroke="#d5dde8" stroke-width="1"/>
+<text x="610.0" y="322.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">20</text>
+<text x="610.0" y="356.0" text-anchor="middle" font-size="18" fill="#172033">9.7%</text>
+<rect x="670" y="270" width="120" height="120" fill="rgb(209,225,244)" stroke="#d5dde8" stroke-width="1"/>
+<text x="730.0" y="322.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">32</text>
+<text x="730.0" y="356.0" text-anchor="middle" font-size="18" fill="#172033">15.5%</text>
+<rect x="190" y="390" width="120" height="120" fill="rgb(215,230,246)" stroke="#d5dde8" stroke-width="1"/>
+<text x="250.0" y="442.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">25</text>
+<text x="250.0" y="476.0" text-anchor="middle" font-size="18" fill="#172033">12.1%</text>
+<rect x="310" y="390" width="120" height="120" fill="rgb(227,237,250)" stroke="#d5dde8" stroke-width="1"/>
+<text x="370.0" y="442.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">13</text>
+<text x="370.0" y="476.0" text-anchor="middle" font-size="18" fill="#172033">6.3%</text>
+<rect x="430" y="390" width="120" height="120" fill="rgb(157,190,225)" stroke="#2f5f8f" stroke-width="2.5"/>
+<text x="490.0" y="442.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">88</text>
+<text x="490.0" y="476.0" text-anchor="middle" font-size="18" fill="#172033">42.7%</text>
+<rect x="550" y="390" width="120" height="120" fill="rgb(212,227,245)" stroke="#d5dde8" stroke-width="1"/>
+<text x="610.0" y="442.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">29</text>
+<text x="610.0" y="476.0" text-anchor="middle" font-size="18" fill="#172033">14.1%</text>
+<rect x="670" y="390" width="120" height="120" fill="rgb(191,213,237)" stroke="#d5dde8" stroke-width="1"/>
+<text x="730.0" y="442.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">51</text>
+<text x="730.0" y="476.0" text-anchor="middle" font-size="18" fill="#172033">24.8%</text>
+<rect x="190" y="510" width="120" height="120" fill="rgb(206,223,243)" stroke="#d5dde8" stroke-width="1"/>
+<text x="250.0" y="562.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">35</text>
+<text x="250.0" y="596.0" text-anchor="middle" font-size="18" fill="#172033">17.0%</text>
+<rect x="310" y="510" width="120" height="120" fill="rgb(223,235,249)" stroke="#d5dde8" stroke-width="1"/>
+<text x="370.0" y="562.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">17</text>
+<text x="370.0" y="596.0" text-anchor="middle" font-size="18" fill="#172033">8.3%</text>
+<rect x="430" y="510" width="120" height="120" fill="rgb(221,234,248)" stroke="#d5dde8" stroke-width="1"/>
+<text x="490.0" y="562.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">19</text>
+<text x="490.0" y="596.0" text-anchor="middle" font-size="18" fill="#172033">9.2%</text>
+<rect x="550" y="510" width="120" height="120" fill="rgb(152,186,223)" stroke="#2f5f8f" stroke-width="2.5"/>
+<text x="610.0" y="562.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">94</text>
+<text x="610.0" y="596.0" text-anchor="middle" font-size="18" fill="#172033">45.6%</text>
+<rect x="670" y="510" width="120" height="120" fill="rgb(201,220,241)" stroke="#d5dde8" stroke-width="1"/>
+<text x="730.0" y="562.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">41</text>
+<text x="730.0" y="596.0" text-anchor="middle" font-size="18" fill="#172033">19.9%</text>
+<rect x="190" y="630" width="120" height="120" fill="rgb(214,228,245)" stroke="#d5dde8" stroke-width="1"/>
+<text x="250.0" y="682.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">27</text>
+<text x="250.0" y="716.0" text-anchor="middle" font-size="18" fill="#172033">13.1%</text>
+<rect x="310" y="630" width="120" height="120" fill="rgb(218,232,247)" stroke="#d5dde8" stroke-width="1"/>
+<text x="370.0" y="682.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">22</text>
+<text x="370.0" y="716.0" text-anchor="middle" font-size="18" fill="#172033">10.7%</text>
+<rect x="430" y="630" width="120" height="120" fill="rgb(209,225,244)" stroke="#d5dde8" stroke-width="1"/>
+<text x="490.0" y="682.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">32</text>
+<text x="490.0" y="716.0" text-anchor="middle" font-size="18" fill="#172033">15.5%</text>
+<rect x="550" y="630" width="120" height="120" fill="rgb(222,234,248)" stroke="#d5dde8" stroke-width="1"/>
+<text x="610.0" y="682.0" text-anchor="middle" font-size="25" font-weight="700" fill="#172033">18</text>
+<text x="610.0" y="716.0" text-anchor="middle" font-size="18" fill="#172033">8.7%</text>
+<rect x="670" y="630" width="120" height="120" fill="rgb(140,178,218)" stroke="#2f5f8f" stroke-width="2.5"/>
+<text x="730.0" y="682.0" text-anchor="middle" font-size="25" font-weight="700" fill="#ffffff">107</text>
+<text x="730.0" y="716.0" text-anchor="middle" font-size="18" fill="#ffffff">51.9%</text>
+<text x="490.0" y="820" text-anchor="middle" font-size="20" font-weight="700" fill="#172033">预测类别 Predicted Label</text>
+<text x="58" y="450.0" text-anchor="middle" font-size="20" font-weight="700" fill="#172033" transform="rotate(-90 58 450.0)">真实类别 True Label</text>
+<rect x="820" y="135" width="210" height="180" fill="#f6f8fb" stroke="#d5dde8"/>
+<text x="840" y="170" font-size="18" font-weight="700" fill="#172033">关键观察</text>
+<text x="840" y="202" font-size="15" font-weight="400" fill="#172033">N 召回最高：67.5%</text>
+<text x="840" y="234" font-size="15" font-weight="400" fill="#172033">BF 最弱：35.0%</text>
+<text x="840" y="266" font-size="15" font-weight="400" fill="#172033">BF 易误判为 N/CF</text>
+<text x="840" y="298" font-size="15" font-weight="400" fill="#172033">CF 召回：51.9%</text>
+</svg>

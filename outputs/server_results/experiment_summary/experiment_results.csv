@@ -1,0 +1,7 @@
+实验编号,实验名称,模型,数据格式,训练策略,LoRA Rank,LoRA Alpha,学习率,Epoch,最佳Checkpoint,Accuracy,Macro-F1,备注
+E1,完整答案版,Qwen2.5-VL-3B-Instruct,故障类型+诊断依据+维护建议,SFT,8,16,1e-4,3,final,0.2660,0.2621,长答案生成干扰分类学习
+E2,分类版 baseline,Qwen2.5-VL-3B-Instruct,仅故障类型,SFT,8,16,1e-4,3,final,0.3379,0.3184,去除长答案后分类效果提升
+E3,分类版 r16 ep5,Qwen2.5-VL-3B-Instruct,仅故障类型,SFT,16,32,8e-5,5,final,0.4738,0.4683,提高 LoRA 容量并增加训练轮数
+E4,分类版 r16 ep5 best ckpt,Qwen2.5-VL-3B-Instruct,仅故障类型,SFT,16,32,8e-5,5,checkpoint-2200,0.4854,0.4805,当前最佳模型
+E5,BF 过采样 2x,Qwen2.5-VL-3B-Instruct,仅故障类型,SFT,16,32,6e-5,5,final,0.3767,0.3713,简单复制 BF 样本导致整体性能下降
+E6,二阶段完整回答,Qwen2.5-VL-3B-Instruct,故障类型+诊断依据+维护建议,从 E4 继续 SFT,16,32,3e-5,2,final,0.4233,0.4096,完整回答训练冲掉部分分类能力
