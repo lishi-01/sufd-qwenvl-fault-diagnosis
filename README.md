@@ -4,13 +4,13 @@
 
 当前最佳结果：
 
-| 模型 | 数据格式 | Best Checkpoint | Accuracy | Macro-F1 |
+| 模型 | 训练方式 | Best Checkpoint / 输出目录 | Accuracy | Macro-F1 |
 |---|---|---:|---:|---:|
-| Qwen2.5-VL-3B-Instruct + LoRA | 仅故障类型 class_only | checkpoint-2200 | **0.4854** | **0.4805** |
+| Qwen2.5-VL-3B-Instruct + LoRA | GRPO rule reward | sufd_grpo_from_ckpt2200 | **0.4874** | **0.4813** |
 
 最终系统采用两步输出策略：
 
-1. 使用最佳 class_only 模型预测故障类型。
+1. 使用最佳分类模型预测故障类型。
 2. 根据预测标签和工况参数生成完整诊断报告，包括故障类型、诊断依据和维护建议。
 
 ## 项目目标
@@ -110,7 +110,8 @@ class_only 预测 + 模板扩展生成最终诊断报告
 │       ├── experiment_summary/          # 实验结果表
 │       ├── metrics_ckpt_2200/           # 最佳 checkpoint 评估结果
 │       ├── final_reports_ckpt_2200/     # 最终诊断报告
-│       └── rlhf_summary/                # DPO 强化学习实验摘要
+│       ├── final_reports_grpo_from_ckpt2200/
+│       └── rlhf_summary/                # DPO/GRPO 强化学习实验摘要
 ├── scripts/
 │   ├── 01_inspect_mat.py
 │   ├── 02_generate_envelope_stft_images.py
@@ -289,6 +290,7 @@ saves/qwen2_5vl_3b/lora/sufd_class_only_r16_ep5/checkpoint-2200
 | E5 BF 过采样 2x | 仅故障类型 | r16, lr=6e-5, epoch=5 | 0.3767 | 0.3713 | 简单过采样破坏类别边界 |
 | E6 二阶段完整回答 | 完整诊断报告 | 从 E4 继续 SFT, lr=3e-5, epoch=2 | 0.4233 | 0.4096 | 生成能力增强但分类下降 |
 | E7 DPO 完整报告偏好优化 | chosen/rejected 完整诊断报告 | 从 E4 继续 DPO, ckpt-400 | 0.4524 | 0.4383 | 跑通偏好优化，但分类指标低于 E4 |
+| E8 GRPO 规则奖励优化 | 完整报告生成 + 规则奖励 | 从 E4 继续 GRPO | **0.4874** | **0.4813** | 当前最高总体指标 |
 
 实验结论：
 
@@ -297,8 +299,11 @@ saves/qwen2_5vl_3b/lora/sufd_class_only_r16_ep5/checkpoint-2200
 - 简单复制 BF 样本会破坏整体类别边界，不适合作为当前优化策略。
 - 从最佳分类模型继续训练完整回答会冲掉一部分分类能力，因此最终采用“分类模型 + 模板扩展”方案。
 - DPO 能学习完整诊断报告的 chosen/rejected 偏好关系，但当前设置未超过 SFT best，因此不作为最终部署模型。
+- GRPO 规则奖励优化带来轻微提升，当前最高 Accuracy 为 0.4874，Macro-F1 为 0.4813。
 
-## 强化学习 DPO 实验
+## 强化学习实验
+
+### DPO 偏好优化
 
 本项目进一步构造了完整诊断报告级别的偏好数据：
 
@@ -315,6 +320,21 @@ DPO 训练从 SFT 最优模型 `checkpoint-2200` 继续进行，最佳 DPO check
 | Qwen2.5-VL-3B-Instruct + LoRA | DPO full report | checkpoint-400 | 0.4524 | 0.4383 | 完整报告偏好优化实验 |
 
 DPO 训练过程中，训练 loss 下降且 rewards/accuracies 上升，说明模型能够区分 chosen 与 rejected 报告；但验证 loss 上升，且最终分类指标低于 SFT best。综合考虑后，本项目将 DPO 作为强化学习探索实验，最终推理仍采用 SFT class_only 模型加模板扩展的方案。
+
+### GRPO 规则奖励优化
+
+本项目进一步使用 TRL GRPO 从 SFT best `checkpoint-2200` 继续进行规则奖励优化。奖励函数包括：
+
+1. 故障类型正确性奖励；
+2. 输出格式完整性奖励；
+3. 报告质量奖励，包括简洁性和避免多个故障类型互相冲突。
+
+| 模型 | 训练方式 | 输出目录 | Accuracy | Macro-F1 | 说明 |
+|---|---|---|---:|---:|---|
+| Qwen2.5-VL-3B-Instruct + LoRA | SFT class_only | checkpoint-2200 | 0.4854 | 0.4805 | 原最佳分类模型 |
+| Qwen2.5-VL-3B-Instruct + LoRA | GRPO rule reward | sufd_grpo_from_ckpt2200 | **0.4874** | **0.4813** | 当前最高指标 |
+
+GRPO 相比 SFT best 获得轻微提升，主要收益来自外圈故障 OF：正确预测数由 94 提升到 105。但 GRPO 同时略微降低了 BF、IF、CF 的正确预测数，因此总体提升幅度较小。
 
 ## 最佳模型类别级指标
 
@@ -348,10 +368,10 @@ outputs/server_results/metrics_ckpt_2200/confusion_matrix_report.md
 
 ## 最终诊断报告
 
-由于完整回答训练会降低分类准确率，本项目最终采用：
+由于完整回答 SFT 和 DPO 未能超过分类基线，而 GRPO 获得轻微提升，本项目最终采用：
 
 ```text
-最佳 class_only 分类模型
+最佳分类模型
         ↓
 抽取预测故障类型
         ↓
@@ -521,10 +541,11 @@ python scripts/07_improve_confusion_matrix.py \
 
 ## 当前不足
 
-- 最佳 Accuracy 仍为 0.4854，说明 Qwen2.5-VL-3B 对该类包络时频图的故障边界学习仍有限。
+- 最佳 Accuracy 仍为 0.4874，说明 Qwen2.5-VL-3B 对该类包络时频图的故障边界学习仍有限。
 - BF 滚动体故障召回较低，是当前主要瓶颈。
 - 当前维护建议为类别模板扩展，不是基于每张图像的细粒度严重程度估计。
 - 当前 DPO 偏好数据主要由模板构造，尚未引入人工偏好或模型真实错误回答。
+- 当前 GRPO 提升幅度较小，奖励函数仍比较粗粒度。
 - 当前仅使用 Qwen2.5-VL-3B，尚未进行 7B 或其他视觉模型对比。
 
 ## 后续优化方向
@@ -535,6 +556,7 @@ python scripts/07_improve_confusion_matrix.py \
 - 增加验证集并自动选择最佳 checkpoint。
 - 结合传统故障特征，如包络谱峰值、峭度、RMS、频带能量，构造图文联合输入。
 - 构造更真实的偏好数据，例如人工标注偏好、模型错误回答采样和多维奖励评分。
+- 继续优化 GRPO 奖励函数和训练步数，使奖励更关注易混淆类别。
 - 在现有 Gradio Demo 基础上增加样例库、批量诊断和历史记录导出功能。
 
 ## 说明
