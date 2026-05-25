@@ -1,0 +1,51 @@
+### model
+model_name_or_path: /root/autodl-tmp/models/Qwen2.5-VL-3B-Instruct
+adapter_name_or_path: saves/qwen2_5vl_3b/lora/sufd_class_only_r16_ep5/checkpoint-2200
+image_max_pixels: 262144
+trust_remote_code: true
+
+### method
+stage: dpo
+do_train: true
+finetuning_type: lora
+lora_target: all
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.05
+pref_beta: 0.1
+pref_loss: sigmoid
+
+### dataset
+dataset: sufd_dpo_train
+eval_dataset: sufd_dpo_test
+template: qwen2_vl
+cutoff_len: 1024
+overwrite_cache: true
+preprocessing_num_workers: 8
+dataloader_num_workers: 4
+
+### output
+output_dir: saves/qwen2_5vl_3b/lora/sufd_dpo_from_ckpt2200
+logging_steps: 10
+save_steps: 200
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: false
+report_to: none
+
+### train
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 4
+learning_rate: 5.0e-6
+num_train_epochs: 2.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
+
+### eval
+do_eval: true
+per_device_eval_batch_size: 2
+eval_strategy: steps
+eval_steps: 200

@@ -101,12 +101,16 @@ class_only 预测 + 模板扩展生成最终诊断报告
 │   └── processed/
 │       ├── images/all/                  # 生成的 RGB 包络 STFT 图像
 │       ├── metadata/                    # all/train/gap/test metadata
-│       └── json/                        # ShareGPT SFT JSON
+│       ├── json/                        # ShareGPT SFT JSON
+│       └── rlhf/                        # DPO chosen/rejected 偏好数据
+├── configs/
+│   └── sufd/                            # LLaMA-Factory 训练配置
 ├── outputs/
 │   └── server_results/
 │       ├── experiment_summary/          # 实验结果表
 │       ├── metrics_ckpt_2200/           # 最佳 checkpoint 评估结果
-│       └── final_reports_ckpt_2200/     # 最终诊断报告
+│       ├── final_reports_ckpt_2200/     # 最终诊断报告
+│       └── rlhf_summary/                # DPO 强化学习实验摘要
 ├── scripts/
 │   ├── 01_inspect_mat.py
 │   ├── 02_generate_envelope_stft_images.py
@@ -114,7 +118,8 @@ class_only 预测 + 模板扩展生成最终诊断报告
 │   ├── 04_build_sharegpt_json.py
 │   ├── 05_eval_predictions.py
 │   ├── 06_build_final_reports.py
-│   └── 07_improve_confusion_matrix.py
+│   ├── 07_improve_confusion_matrix.py
+│   └── 08_build_preference_data.py
 └── README.md
 ```
 
@@ -129,6 +134,7 @@ class_only 预测 + 模板扩展生成最终诊断报告
 | `05_eval_predictions.py` | 从模型输出抽取标签，计算 Accuracy、Macro-F1 和混淆矩阵 |
 | `06_build_final_reports.py` | 将 class_only 预测扩展为完整中文诊断报告 |
 | `07_improve_confusion_matrix.py` | 生成增强版混淆矩阵 CSV、Markdown 和 SVG |
+| `08_build_preference_data.py` | 构造 DPO / 奖励模型训练用 chosen-rejected 偏好数据 |
 
 ## 数据预处理
 
@@ -282,6 +288,7 @@ saves/qwen2_5vl_3b/lora/sufd_class_only_r16_ep5/checkpoint-2200
 | E4 最佳 checkpoint | 仅故障类型 | r16, lr=8e-5, epoch=5, ckpt-2200 | **0.4854** | **0.4805** | 当前最佳分类模型 |
 | E5 BF 过采样 2x | 仅故障类型 | r16, lr=6e-5, epoch=5 | 0.3767 | 0.3713 | 简单过采样破坏类别边界 |
 | E6 二阶段完整回答 | 完整诊断报告 | 从 E4 继续 SFT, lr=3e-5, epoch=2 | 0.4233 | 0.4096 | 生成能力增强但分类下降 |
+| E7 DPO 完整报告偏好优化 | chosen/rejected 完整诊断报告 | 从 E4 继续 DPO, ckpt-400 | 0.4524 | 0.4383 | 跑通偏好优化，但分类指标低于 E4 |
 
 实验结论：
 
@@ -289,6 +296,25 @@ saves/qwen2_5vl_3b/lora/sufd_class_only_r16_ep5/checkpoint-2200
 - 提高 LoRA rank 到 16 并训练 5 epoch 后，性能显著提升。
 - 简单复制 BF 样本会破坏整体类别边界，不适合作为当前优化策略。
 - 从最佳分类模型继续训练完整回答会冲掉一部分分类能力，因此最终采用“分类模型 + 模板扩展”方案。
+- DPO 能学习完整诊断报告的 chosen/rejected 偏好关系，但当前设置未超过 SFT best，因此不作为最终部署模型。
+
+## 强化学习 DPO 实验
+
+本项目进一步构造了完整诊断报告级别的偏好数据：
+
+```text
+chosen：正确故障类型 + 诊断依据 + 维护建议
+rejected：错误故障类型 + 诊断依据 + 维护建议
+```
+
+DPO 训练从 SFT 最优模型 `checkpoint-2200` 继续进行，最佳 DPO checkpoint 为 `checkpoint-400`。
+
+| 模型 | 训练方式 | Checkpoint | Accuracy | Macro-F1 | 说明 |
+|---|---|---:|---:|---:|---|
+| Qwen2.5-VL-3B-Instruct + LoRA | SFT class_only | checkpoint-2200 | **0.4854** | **0.4805** | 最终分类模型 |
+| Qwen2.5-VL-3B-Instruct + LoRA | DPO full report | checkpoint-400 | 0.4524 | 0.4383 | 完整报告偏好优化实验 |
+
+DPO 训练过程中，训练 loss 下降且 rewards/accuracies 上升，说明模型能够区分 chosen 与 rejected 报告；但验证 loss 上升，且最终分类指标低于 SFT best。综合考虑后，本项目将 DPO 作为强化学习探索实验，最终推理仍采用 SFT class_only 模型加模板扩展的方案。
 
 ## 最佳模型类别级指标
 
@@ -498,6 +524,7 @@ python scripts/07_improve_confusion_matrix.py \
 - 最佳 Accuracy 仍为 0.4854，说明 Qwen2.5-VL-3B 对该类包络时频图的故障边界学习仍有限。
 - BF 滚动体故障召回较低，是当前主要瓶颈。
 - 当前维护建议为类别模板扩展，不是基于每张图像的细粒度严重程度估计。
+- 当前 DPO 偏好数据主要由模板构造，尚未引入人工偏好或模型真实错误回答。
 - 当前仅使用 Qwen2.5-VL-3B，尚未进行 7B 或其他视觉模型对比。
 
 ## 后续优化方向
@@ -507,6 +534,7 @@ python scripts/07_improve_confusion_matrix.py \
 - 引入训练集准确率评估，区分欠拟合和泛化不足。
 - 增加验证集并自动选择最佳 checkpoint。
 - 结合传统故障特征，如包络谱峰值、峭度、RMS、频带能量，构造图文联合输入。
+- 构造更真实的偏好数据，例如人工标注偏好、模型错误回答采样和多维奖励评分。
 - 在现有 Gradio Demo 基础上增加样例库、批量诊断和历史记录导出功能。
 
 ## 说明

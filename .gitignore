@@ -6,6 +6,7 @@ bearingset mat/
 # Generated datasets and large processed files
 data/processed/images/
 data/processed/json/
+data/processed/rlhf/
 data/processed/metadata/all_metadata.csv
 
 # Model files, checkpoints, and training outputs
